@@ -10,6 +10,7 @@ function RootLayout($render)
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>Booking Application</title>
+    <base href="/public/">
 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
