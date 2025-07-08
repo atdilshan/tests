@@ -3,20 +3,16 @@
   "description": "Booking Application Web.",
   "version": "1.0.0",
   "require": {
-    "php": "^8.1",
+    "php": "^8.2",
     "ext-dom": "*",
     "ext-mbstring": "*",
     "vlucas/phpdotenv": "^5.6"
   },
   "scripts": {
     "start": "php -S localhost:8000 -t public",
-    "ins": [
+    "post-install-cmd": [
       "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
-      "composer install",
-      "composer dump-autoload"
-    ],
-     "post-install-cmd": [
-    "echo 'Post-install script ran.'"
-  ]
+      "echo 'Post-install script ran.'"
+    ]
   }
 }
