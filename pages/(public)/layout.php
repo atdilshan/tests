@@ -5,4 +5,3 @@ function PublicLayout($render)
   $render();
   include __DIR__ . '/../../components/layouts/footer.php';
 }
-?>

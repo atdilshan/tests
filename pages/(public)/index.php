@@ -1,1 +1,4 @@
-<h1>Public Home Page</h1>
+<?php
+setTitle("Home");
+?>
+<h1>Home Page</h1>

@@ -1,5 +1,6 @@
 <?php
-function renderLayoutsHierarchy(string $pageDir, callable $pageRenderCallback): void {
+function renderLayoutsHierarchy(string $pageDir, callable $pageRenderCallback): void
+{
     $baseDir = realpath(__DIR__ . '/pages');
     $targetDir = realpath($pageDir);
 
@@ -36,7 +37,49 @@ function renderLayoutsHierarchy(string $pageDir, callable $pageRenderCallback): 
         }
     }
 
-    $final = $pageRenderCallback;
+    $rawHtml = (function () use ($pageRenderCallback) {
+        ob_start();
+        $pageRenderCallback();
+        return ob_get_clean();
+    })();
+
+    $doc = new DOMDocument();
+    libxml_use_internal_errors(true);
+    $doc->loadHTML('<meta charset="UTF-8">' . $rawHtml);
+
+    $headTags = '';
+    $bodyScripts = '';
+    $finalContent = '';
+
+    $body = $doc->getElementsByTagName('body')->item(0);
+    if ($body) {
+        foreach (iterator_to_array($body->childNodes) as $node) {
+            if ($node->nodeType === XML_ELEMENT_NODE) {
+                $tag = $node->nodeName;
+                if ($tag === 'script') {
+                    $bodyScripts .= $doc->saveHTML($node) . "\n";
+                } elseif (in_array($tag, ['link', 'style', 'meta'])) {
+                    $headTags .= $doc->saveHTML($node) . "\n";
+                } else {
+                    $finalContent .= $doc->saveHTML($node);
+                }
+            } elseif ($node->nodeType === XML_TEXT_NODE) {
+                $finalContent .= $doc->saveHTML($node);
+            }
+        }
+    } else {
+        $finalContent = $rawHtml;
+    }
+
+    $GLOBALS['__page_content'] = $finalContent;
+    $GLOBALS['__page_title'] = $GLOBALS['title'] ?? null;
+    $GLOBALS['__page_head_tags'] = $headTags;
+    $GLOBALS['__page_body_scripts'] = $bodyScripts;
+
+    $final = function () {
+        echo $GLOBALS['__page_content'];
+    };
+
     foreach (array_reverse($layoutFns) as $layoutFn) {
         $inner = $final;
         $final = function () use ($layoutFn, $inner) {
