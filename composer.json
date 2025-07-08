@@ -1,0 +1,14 @@
+{
+  "name": "booking/web",
+  "description": "Booking Application Web.",
+  "version": "1.0.0",
+  "require": {},
+  "scripts": {
+    "start": "php -S localhost:8000",
+    "ins": [
+      "@php -r \"file_exists('.env') || copy('.env.example', '.env');\"",
+      "composer install",
+      "composer dump-autoload"
+    ]
+  }
+}
