@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../renderLayoutsHierarchy.php';
 require_once __DIR__ . '/../utils/helpers/meta.php';
+require_once __DIR__ . '/../utils/helpers/env.php';
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $path = rtrim($uri, '/');

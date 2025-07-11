@@ -5,17 +5,6 @@ function RootLayout($render)
   $headTags = $GLOBALS['__page_head_tags'] ?? '';
   $bodyScripts = $GLOBALS['__page_body_scripts'] ?? '';
 
-  if (!function_exists('isProduction')) {
-    function env(string $key, mixed $default = null): mixed
-    {
-      return $_ENV[$key] ?? $default;
-    }
-
-    function isProduction(): bool
-    {
-      return env('APP_ENV') === 'production';
-    }
-  }
 ?>
   <!DOCTYPE html>
   <html lang="en">
