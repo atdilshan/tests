@@ -1,6 +1,6 @@
 <?php
 function env(string $key, mixed $default = null): mixed {
-    return $_ENV[$key] ?? $default;
+    return getenv($key) ?: $default;
 }
 
 function isProduction(): bool {
